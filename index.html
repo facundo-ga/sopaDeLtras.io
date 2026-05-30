@@ -46,6 +46,33 @@
     0 15px 40px rgba(0,0,0,.35);
 }
 
+ .star-particle{
+    position:fixed;
+    pointer-events:none;
+    font-size:14px;
+    z-index:9999;
+    animation: estrellaVuelo .8s ease-out forwards;
+    will-change:transform,opacity;
+}
+
+@keyframes estrellaVuelo{
+    0%{
+        transform:
+            translate(0,0)
+            scale(.5)
+            rotate(0deg);
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translate(var(--x), var(--y))
+            scale(1.6)
+            rotate(360deg);
+        opacity:0;
+    }
+}       
+        
 .hero-glow{
     position:absolute;
     inset:0;
@@ -924,6 +951,34 @@ if (placedWords.length !== Object.keys(data).length) {
     console.log("Regenerando sopa...");
     location.reload();
 }
+
+ .star-particle{
+    position:fixed;
+    pointer-events:none;
+    font-size:14px;
+    z-index:9999;
+    animation: estrellaVuelo .8s ease-out forwards;
+    will-change:transform,opacity;
+}
+
+@keyframes estrellaVuelo{
+    0%{
+        transform:
+            translate(0,0)
+            scale(.5)
+            rotate(0deg);
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translate(var(--x), var(--y))
+            scale(1.6)
+            rotate(360deg);
+        opacity:0;
+    }
+}   
+    
 </script>
 </body>
 </html>
