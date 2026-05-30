@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+<rect width='64' height='64' rx='12' fill='%2342a5f5'/>
+<text x='50%' y='58%' font-size='36' text-anchor='middle'>💻</text>
+</svg>">
+    <title>Sopa de Letras TIC | Completa</title>
+ <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --neon-blue: #4fc3f7; 
+            --neon-pink: #f48fb1; 
+            --bg-dark: #2c3e50; 
+            --accent: #ffd54f;
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background: radial-gradient(circle, #34495e, #1a252f); 
+            color: white; 
+            margin: 0; 
+            display: flex; flex-direction: column; min-height: 100vh; 
+        }
+
+       .hero{
+    position: relative;
+    overflow: hidden;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ff6ec7 0%,
+        #7b68ee 40%,
+        #42a5f5 100%
+    );
+
+    padding: 45px 20px;
+    text-align: center;
+
+    border-bottom: 4px solid rgba(255,255,255,.25);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.35);
+}
+
+.hero-glow{
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(circle at 20% 20%,
+    rgba(255,255,255,.35),
+    transparent 30%),
+
+    radial-gradient(circle at 80% 30%,
+    rgba(255,255,255,.25),
+    transparent 25%),
+
+    radial-gradient(circle at 50% 100%,
+    rgba(255,255,255,.15),
+    transparent 40%);
+
+    animation: floatGlow 8s linear infinite;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.badge{
+    display:inline-block;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    font-size:.9rem;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.hero h1{
+    margin:15px 0 10px;
+
+    font-family:'Fredoka One', cursive;
+
+    font-size:clamp(2.2rem,5vw,4.5rem);
+
+    line-height:1;
+
+    text-transform:uppercase;
+
+    text-shadow:
+    0 4px 15px rgba(0,0,0,.25);
+}
+
+.hero h1 span{
+    color:#ffe066;
+
+    display:block;
+
+    margin-top:10px;
+
+    font-size:1.3em;
+
+    text-shadow:
+    0 0 15px rgba(255,224,102,.8),
+    0 0 35px rgba(255,224,102,.5);
+}
+
+.hero p{
+    max-width:650px;
+    margin:auto;
+
+    font-size:1.1rem;
+
+    color:rgba(255,255,255,.95);
+}
+
+#status{
+    text-align:center;
+    font-size:1.1rem;
+    font-weight:bold;
+    padding:12px;
+}
+
+@keyframes floatGlow{
+    from{
+        transform:translateX(-20px);
+    }
+    to{
+        transform:translateX(20px);
+    }
+}
+
+        .game-wrapper { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; padding: 20px; }
+
+        #grid { 
+            display: grid; grid-template-columns: repeat(20, 30px); gap: 4px; 
+            background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .cell { 
+            width: 30px; height: 30px; background: rgba(255,255,255,0.9); 
+            color: #333; display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; cursor: pointer; border-radius: 6px; transition: transform 0.2s;
+        }
+        .cell:hover { transform: scale(1.2); background: var(--accent); }
+        .cell.found { background: var(--neon-pink) !important; color: white; }
+
+        .panel { 
+            width: 320px; background: rgba(255,255,255,0.1); padding: 20px; 
+            border-radius: 20px; backdrop-filter: blur(10px);
+        }
+
+        button { 
+            width: 100%; padding: 12px; margin-top: 10px; border: none; 
+            border-radius: 10px; background: var(--accent); font-family: 'Fredoka One'; 
+            color: #5d4037; cursor: pointer; font-size: 1.1em; transition: 0.3s;
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+        footer { text-align: center; padding: 20px; font-family: 'Fredoka One'; color: var(--neon-blue); }
+       
+.cell.selected{
+    background: #42a5f5 !important;
+    color: white !important;
+    transform: scale(1.15);
+    box-shadow:
+        0 0 10px #42a5f5,
+        0 0 20px #42a5f5;
+}
+
+@keyframes pulseSelect{
+    0%{
+        box-shadow: 0 0 5px #42a5f5;
+    }
+    50%{
+        box-shadow:
+            0 0 15px #42a5f5,
+            0 0 30px #42a5f5;
+    }
+    100%{
+        box-shadow: 0 0 5px #42a5f5;
+    }
+}
+
+.cell.selected{
+    background:#42a5f5 !important;
+    color:white !important;
+    transform:scale(1.15);
+    animation:pulseSelect .8s infinite;
+}
+
+#currentWord{
+    text-align:center;
+    font-size:1.5rem;
+    font-weight:bold;
+    color:#ffe066;
+    min-height:35px;
+    letter-spacing:3px;
+}
+
+@media print {
+
+    body{
+        background:white !important;
+        color:black !important;
+    }
+
+    .hero{
+        box-shadow:none !important;
+    }
+
+    button{
+        display:none !important;
+    }
+
+    #status{
+        display:none !important;
+    }
+}
+
+.footer{
+    margin-top:auto;
+
+    background:rgba(0,0,0,.25);
+
+    backdrop-filter:blur(10px);
+
+    border-top:1px solid rgba(255,255,255,.15);
+
+    padding:20px;
+
+    text-align:center;
+}
+
+.footer-content{
+    max-width:1000px;
+    margin:auto;
+}
+
+.footer-logo{
+    font-size:2rem;
+    margin-bottom:8px;
+
+    text-shadow:
+        0 0 10px #42a5f5,
+        0 0 20px #42a5f5;
+}
+
+.footer p{
+    margin:6px 0;
+
+    color:rgba(255,255,255,.9);
+
+    font-size:.95rem;
+}
+
+.footer small{
+    color:rgba(255,255,255,.6);
+    letter-spacing:1px;
+}
+
+@keyframes brilloDorado {
+    0% {
+        background: #ffe8a3;
+        box-shadow: 0 0 5px rgba(255,213,79,.4);
+    }
+
+    50% {
+        background: #ffd54f;
+        box-shadow:
+            0 0 10px rgba(255,213,79,.8),
+            0 0 20px rgba(255,213,79,.6),
+            0 0 30px rgba(255,213,79,.4);
+    }
+
+    100% {
+        background: #ffe8a3;
+        box-shadow: 0 0 5px rgba(255,213,79,.4);
+    }
+}
+
+#list li.seleccionada{
+    color: #5d4037;
+    font-weight: bold;
+    border-left: 5px solid #ffd54f;
+    border-radius: 8px;
+    animation: brilloDorado 1.5s infinite ease-in-out;
+}
+#list li:hover{
+    background:rgba(255,255,255,.15);
+}
+
+#list li.activa{
+    background:linear-gradient(
+        90deg,
+        #ffd54f,
+        #ffb300
+    );
+    color:#333;
+    font-weight:bold;
+    box-shadow:0 0 15px rgba(255,213,79,.5);
+    transform:translateX(5px);
+}
+
+#grid{
+    touch-action:none;
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+.cell{
+    touch-action:none;
+}
+    </style>
+</head>
+<body>
+<header class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+        <span class="badge">🎓 Tecnología • TIC • Educación</span>
+
+        <h1>
+            🧩 SOPA DE LETRAS
+            <span>TIC</span>
+        </h1>
+
+        <p>
+            Encuentra las 20 palabras ocultas y descubre sus definiciones.
+        </p>
+    </div>
+</header>
+
+<div id="status"></div>
+    <div id="currentWord"></div>
+    <div class="game-wrapper">
+        <div id="grid"></div>
+        <div class="panel">
+            <h3>Palabras a buscar y significado</h3>
+            <ul id="list"></ul>
+            <div id="glosario">
+                <h4 id="w-title">Definición</h4>
+                <p id="w-desc">Haz clic en una palabra de la lista.</p>
+            </div>
+            <div class="controls">
+                <button onclick="resolverSopa()">✨ Resolver todas</button>
+                <button onclick="location.reload()" style="background:#7e8299">🔄 Reiniciar</button>
+                <button onclick="window.print()">📄 Descargar PDF</button>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">🧩 TIC</div>
+
+        <p>
+            Sopa de Letras Interactiva • Tecnología de la Información y la Comunicación
+        </p>
+
+        <small>
+            © 2026 - luci
+        </small>
+    </div>
+</footer>
+
+<script>
+const data = {
+    "TECNICA": "Procedimientos o recursos que se usan en una ciencia o arte.",
+    "TECNOLOGIA": "Aplicación del conocimiento científico para resolver problemas.",
+    "INNOVACION": "Creación o modificación de novedades que mejoran procesos.",
+    "DATOS": "Hechos en bruto que aún no han sido procesados.",
+    "INFORMACION": "Conjunto de datos procesados que tienen un significado.",
+    "COMPUTACION": "Estudio científico de los sistemas de procesamiento de datos.",
+    "INFORMATICA": "Tratamiento automático de la información mediante computadoras.",
+    "TELEMATICA": "Servicios que combinan las telecomunicaciones y la informática.",
+    "OFIMATICA": "Herramientas informáticas aplicadas a tareas de oficina.",
+    "BUROTICA": "Automatización de las actividades administrativas.",
+    "DOMOTICA": "Sistemas para automatizar la gestión de una vivienda.",
+    "ORGWARE": "El factor humano y la estructura organizativa tecnológica.",
+    "NANOTECNOLOGIA": "Manipulación de la materia a escala atómica y molecular.",
+    "HARDWARE": "La parte física y tangible de un sistema informático.",
+    "SOFTWARE": "El conjunto de programas y reglas lógicas del equipo.",
+    "INFOWARE": "Información, datos y conocimientos del sistema.",
+    "TIC": "Tecnologías de la Información y la Comunicación.",
+    "NTIC": "Nuevas Tecnologías de la Información y la Comunicación.",
+    "NTIT": "Nuevas Tecnologías de la Información y el Trabajo.",
+    "NTICX": "Tecnologías de información, conectividad y convergencia."
+};
+
+const size = 20;
+const gridMatrix = Array(size).fill().map(() => Array(size).fill(""));
+const placedWords = [];
+
+let isSelecting = false;
+let selectedCells = [];
+
+// ======================
+// COLOCAR 10 HORIZONTALES Y 10 VERTICALES
+// ======================
+
+const words = Object.keys(data).sort(() => Math.random() - 0.5);
+
+const horizontales = words.slice(0, 10);
+const verticales = words.slice(10, 20);
+
+function colocarPalabra(word, dir) {
+
+    let intentos = 0;
+
+    while (intentos < 5000) {
+
+        intentos++;
+
+        let r, c;
+
+        if (dir === "H") {
+
+            r = Math.floor(Math.random() * size);
+            c = Math.floor(Math.random() * (size - word.length + 1));
+
+            let libre = true;
+
+            for (let i = 0; i < word.length; i++) {
+
+                let actual = gridMatrix[r][c + i];
+
+                if (actual !== "" && actual !== word[i]) {
+                    libre = false;
+                    break;
+                }
+            }
+
+            if (!libre) continue;
+
+            const cells = [];
+
+            for (let i = 0; i < word.length; i++) {
+
+                gridMatrix[r][c + i] = word[i];
+
+                cells.push({
+                    r,
+                    c: c + i
+                });
+            }
+
+            placedWords.push({
+                word,
+                dir,
+                cells
+            });
+
+            return true;
+        }
+
+        if (dir === "V") {
+
+            r = Math.floor(Math.random() * (size - word.length + 1));
+            c = Math.floor(Math.random() * size);
+
+            let libre = true;
+
+            for (let i = 0; i < word.length; i++) {
+
+                let actual = gridMatrix[r + i][c];
+
+                if (actual !== "" && actual !== word[i]) {
+                    libre = false;
+                    break;
+                }
+            }
+
+            if (!libre) continue;
+
+            const cells = [];
+
+            for (let i = 0; i < word.length; i++) {
+
+                gridMatrix[r + i][c] = word[i];
+
+                cells.push({
+                    r: r + i,
+                    c
+                });
+            }
+
+            placedWords.push({
+                word,
+                dir,
+                cells
+            });
+
+            return true;
+        }
+    }
+
+    console.log("No se pudo colocar:", word);
+    return false;
+}
+
+horizontales.forEach(word => colocarPalabra(word, "H"));
+verticales.forEach(word => colocarPalabra(word, "V"));
+
+// ======================
+// RELLENAR VACÍOS
+// ======================
+
+for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+
+        if (gridMatrix[r][c] === "") {
+
+            gridMatrix[r][c] =
+                String.fromCharCode(
+                    65 + Math.floor(Math.random() * 26)
+                );
+        }
+    }
+}
+
+// ======================
+// CREAR TABLERO
+// ======================
+
+const gridEl = document.getElementById("grid");
+
+for (let r = 0; r < size; r++) {
+
+    for (let c = 0; c < size; c++) {
+
+        const cell = document.createElement("div");
+
+        cell.className = "cell";
+        cell.dataset.r = r;
+        cell.dataset.c = c;
+
+        cell.textContent = gridMatrix[r][c];
+
+        cell.addEventListener("mousedown", () => {
+            isSelecting = true;
+            seleccionar(cell);
+        });
+
+        cell.addEventListener("mouseover", () => {
+            if (isSelecting) {
+                seleccionar(cell);
+            }
+        });
+
+        cell.addEventListener("touchstart", e => {
+    e.preventDefault();
+
+    isSelecting = true;
+    seleccionar(cell);
+});
+
+cell.addEventListener("touchmove", e => {
+
+    e.preventDefault();
+
+    const touch = e.touches[0];
+
+    const elemento = document.elementFromPoint(
+        touch.clientX,
+        touch.clientY
+    );
+
+    if (
+        elemento &&
+        elemento.classList.contains("cell")
+    ) {
+        seleccionar(elemento);
+    }
+
+}, { passive:false });
+
+        gridEl.appendChild(cell);
+    }
+}
+
+function seleccionar(cell) {
+
+    if (
+        !selectedCells.includes(cell) &&
+        !cell.classList.contains("found")
+    ) {
+        cell.classList.add("selected");
+        selectedCells.push(cell);
+    }
+}
+
+function verificarPalabra() {
+
+    if (!selectedCells.length) return;
+
+    const palabra = selectedCells
+        .map(c => c.textContent)
+        .join("");
+
+    const palabraInvertida =
+        palabra.split("").reverse().join("");
+
+    const existe =
+        data[palabra] ||
+        data[palabraInvertida];
+
+    const status =
+        document.getElementById("status");
+
+    if (existe) {
+
+        const encontrada =
+            data[palabra]
+                ? palabra
+                : palabraInvertida;
+
+        selectedCells.forEach(c => {
+            c.classList.remove("selected");
+            c.classList.add("found");
+        });
+
+        [...document.querySelectorAll("#list li")]
+        .forEach(li => {
+
+            if (li.textContent === encontrada) {
+
+                li.style.textDecoration =
+                    "line-through";
+
+                li.style.color = "green";
+                li.style.fontWeight = "bold";
+            }
+        });
+
+        status.textContent =
+            "✅ Encontraste: " + encontrada;
+
+        status.style.color =
+            "var(--success)";
+
+    } else {
+
+        selectedCells.forEach(c => {
+
+            c.classList.add("error");
+
+            setTimeout(() => {
+
+                c.classList.remove(
+                    "error",
+                    "selected"
+                );
+
+            }, 500);
+        });
+
+        status.textContent =
+            "❌ No es una palabra válida";
+
+        status.style.color =
+            "var(--error)";
+    }
+
+    selectedCells = [];
+}
+
+document.addEventListener("mouseup", () => {
+
+    if (!isSelecting) return;
+
+    isSelecting = false;
+    verificarPalabra();
+});
+
+document.addEventListener("touchend", () => {
+
+    if (!isSelecting) return;
+
+    isSelecting = false;
+    verificarPalabra();
+});
+
+// ======================
+// LISTA DE PALABRAS
+// ======================
+
+const list =
+    document.getElementById("list");
+
+Object.keys(data).forEach(word => {
+
+    const li =
+        document.createElement("li");
+
+    li.textContent = word;
+
+   li.addEventListener("click", () => {
+
+    document
+        .querySelectorAll("#list li")
+        .forEach(item =>
+            item.classList.remove("seleccionada")
+        );
+
+    li.classList.add("seleccionada");
+
+    document.getElementById("w-title")
+        .textContent = word;
+
+    document.getElementById("w-desc")
+    .textContent = data[word];
+});
+
+    list.appendChild(li);
+});
+
+// ======================
+// RESOLVER SOPA
+// ======================
+
+function resolverSopa() {
+
+    placedWords.forEach(item => {
+
+        item.cells.forEach(pos => {
+
+            document
+            .querySelector(
+                `[data-r="${pos.r}"][data-c="${pos.c}"]`
+            )
+            .classList.add("found");
+        });
+
+        [...document.querySelectorAll("#list li")]
+        .forEach(li => {
+
+            if (li.textContent === item.word) {
+
+                li.style.textDecoration =
+                    "line-through";
+
+                li.style.color = "green";
+                li.style.fontWeight = "bold";
+            }
+        });
+    });
+
+    document.getElementById("status")
+        .textContent =
+        `🏆 Sopa resuelta (${placedWords.length}/20 palabras)`;
+
+    document.getElementById("status")
+        .style.color =
+        "var(--success)";
+}
+
+// AQUÍ ABAJO
+
+console.log(
+    `${placedWords.length} de ${Object.keys(data).length} palabras colocadas`
+);
+
+if (placedWords.length !== Object.keys(data).length) {
+    console.log("Regenerando sopa...");
+    location.reload();
+}
+</script>
+</body>
+</html>
