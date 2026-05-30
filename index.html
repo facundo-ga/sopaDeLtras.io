@@ -46,7 +46,7 @@
     0 15px 40px rgba(0,0,0,.35);
 }
 
- .star-particle{
+.star-particle{
     position:fixed;
     pointer-events:none;
     font-size:14px;
@@ -71,8 +71,7 @@
             rotate(360deg);
         opacity:0;
     }
-}       
-        
+}
 .hero-glow{
     position:absolute;
     inset:0;
@@ -952,33 +951,74 @@ if (placedWords.length !== Object.keys(data).length) {
     location.reload();
 }
 
- .star-particle{
-    position:fixed;
-    pointer-events:none;
-    font-size:14px;
-    z-index:9999;
-    animation: estrellaVuelo .8s ease-out forwards;
-    will-change:transform,opacity;
+// ======================
+// ESTRELLAS DE COLORES
+// ======================
+
+const coloresEstrella = [
+    "#ffd54f",
+    "#ff6ec7",
+    "#42a5f5",
+    "#7b68ee",
+    "#00e676",
+    "#ff7043"
+];
+
+let ultimoTiempo = 0;
+
+document.addEventListener("mousemove", e => {
+
+    const ahora = Date.now();
+
+    if (ahora - ultimoTiempo < 20) return;
+
+    ultimoTiempo = ahora;
+
+    crearEstrella(
+        e.clientX,
+        e.clientY
+    );
+});
+
+function crearEstrella(x,y){
+
+    const estrella =
+        document.createElement("div");
+
+    estrella.className =
+        "star-particle";
+
+    estrella.textContent = "⭐";
+
+    estrella.style.left = x + "px";
+    estrella.style.top = y + "px";
+
+    estrella.style.color =
+        coloresEstrella[
+            Math.floor(
+                Math.random() *
+                coloresEstrella.length
+            )
+        ];
+
+    estrella.style.setProperty(
+        "--x",
+        (Math.random()*80-40)+"px"
+    );
+
+    estrella.style.setProperty(
+        "--y",
+        (Math.random()*80-40)+"px"
+    );
+
+    document.body.appendChild(
+        estrella
+    );
+
+    setTimeout(() => {
+        estrella.remove();
+    }, 800);
 }
-
-@keyframes estrellaVuelo{
-    0%{
-        transform:
-            translate(0,0)
-            scale(.5)
-            rotate(0deg);
-        opacity:1;
-    }
-
-    100%{
-        transform:
-            translate(var(--x), var(--y))
-            scale(1.6)
-            rotate(360deg);
-        opacity:0;
-    }
-}   
-    
 </script>
 </body>
 </html>
