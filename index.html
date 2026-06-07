@@ -28,6 +28,31 @@
             min-height: 100vh;
         }
 
+        .floating-icons span:nth-child(1) {
+            left: 10%;
+            animation-delay: 3s;
+        }
+
+        .floating-icons span:nth-child(2) {
+            left: 30%;
+            animation-delay: 5s;
+        }
+
+        .floating-icons span:nth-child(3) {
+            left: 50%;
+            animation-delay: 7s;
+        }
+
+        .floating-icons span:nth-child(4) {
+            left: 70%;
+            animation-delay: 9s;
+        }
+
+        .floating-icons span:nth-child(5) {
+            left: 90%;
+            animation-delay: 11s;
+        }
+
         .hero {
             position: relative;
             overflow: hidden;
@@ -502,11 +527,114 @@
                 font-size: .95rem;
             }
         }
+
+
+        .tic-glow {
+            display: block;
+            margin-top: 10px;
+            color: #ffe066;
+            animation: brilloTIC 2s infinite alternate;
+        }
+
+        @keyframes brilloTIC {
+            0% {
+                text-shadow:
+                    0 0 10px #ffe066,
+                    0 0 20px #ffd54f;
+                transform: scale(1);
+            }
+
+            100% {
+                text-shadow:
+                    0 0 20px #fff176,
+                    0 0 40px #ffd54f,
+                    0 0 60px #ffeb3b;
+                transform: scale(1.05);
+            }
+        }
+
+        .floating-icons {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-icons span {
+            position: absolute;
+            font-size: 50px;
+            opacity: .2;
+            animation: flotar 12s linear infinite;
+        }
+
+        .floating-icons span:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-icons span:nth-child(2) {
+            left: 30%;
+            animation-delay: 2s;
+        }
+
+        .floating-icons span:nth-child(3) {
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        .floating-icons span:nth-child(4) {
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        .floating-icons span:nth-child(5) {
+            left: 90%;
+            animation-delay: 8s;
+        }
+
+        @keyframes flotar {
+
+            0% {
+                transform: translateY(150px) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: .2;
+            }
+
+            90% {
+                opacity: .2;
+            }
+
+            100% {
+                transform: translateY(-180px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+
+        .floating-icons span {
+            position: absolute;
+            top: 120px;
+            font-size: 30px;
+            opacity: 0;
+            /* ocultos al inicio */
+            animation: flotar 12s linear infinite;
+        }
     </style>
 </head>
 
 <body>
     <header class="hero">
+
+        <div class="floating-icons">
+            <span>💻</span>
+            <span>📱</span>
+            <span>🌐</span>
+            <span>⚡</span>
+            <span>🖥️</span>
+        </div>
         <div class="hero-glow"></div>
 
         <div class="hero-content">
@@ -552,7 +680,13 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">🧩 TIC</div>
-
+            <div class="floating-icons">
+                <span>💻</span>
+                <span>📱</span>
+                <span>🌐</span>
+                <span>⚡</span>
+                <span>🖥️</span>
+            </div>
             <p>
                 Sopa de Letras Interactiva • Tecnología de la Información y la Comunicación
             </p>
